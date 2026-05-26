@@ -23,7 +23,15 @@ class GraphBuilder():
 
 
     def build_graph(self):
-        pass
+        graph_builder=StateGraph(MessagesState)
+        graph_builder.add_node("agent", self.agent_function)
+        graph_builder.add_node("tools", ToolNode(tools=self.tools))
+        graph_builder.add_edge(START,"agent")
+        graph_builder.add_conditional_edges("agent",tools_condition)
+        graph_builder.add_edge("tools","agent")
+        graph_builder.add_edge("agent",END)
+        self.graph = graph_builder.compile()
+        return self.graph
 
 
 
